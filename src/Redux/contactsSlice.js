@@ -33,6 +33,4 @@ const contactsSlice = createSlice({
 
 export const contactsReducer = contactsSlice.reducer;
 
-// export const persistedContactsReducer = contactsReducer();
-
 export const { onDelete, addContacts } = contactsSlice.actions;
