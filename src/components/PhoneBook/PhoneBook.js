@@ -33,7 +33,7 @@ export const PhoneBook = () => {
           if (existingContact) {
             toast.error('Contact already exists');
           } else {
-            toast.success('Contact ADD');
+            toast.success('Contact added');
             dispatch(addContacts(values));
             actions.resetForm();
           }
