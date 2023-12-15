@@ -1,30 +1,35 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ContactDelButton } from './Contacts.styled';
-import { onDelete } from 'Redux/contactsSlice';
+
+import { selectContacts, selectFilter } from 'Redux/selector';
+import { deleteContact, fetchContacts } from 'Redux/servise';
+import { useEffect } from 'react';
 
 export const Contacts = () => {
-  const value = useSelector(getContacts);
-  function getContacts(state) {
-    return state.contacts.contacts;
-  }
-  const nameFromFilter = useSelector(state => state.filter);
-  const filteredContacts = value.filter(({ name }) =>
-    name.toLowerCase().includes(nameFromFilter.toLowerCase())
-  );
-  const dispatch = useDispatch();
+  const value = useSelector(selectContacts);
 
+  const nameFromFilter = useSelector(selectFilter);
+
+  const visibleContacts = value.filter(item =>
+    item.name.toLocaleLowerCase().includes(nameFromFilter.toLocaleLowerCase())
+  );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
   return (
     <div>
       {
         <ul>
-          {filteredContacts.map(contact => (
-            <li key={contact.id}>
+          {visibleContacts.map(({ name, number, id }) => (
+            <li key={id}>
               <p>
-                {contact.name}: {contact.number}
+                {name}: {number}
               </p>
               <ContactDelButton
                 type="button"
-                onClick={() => dispatch(onDelete(contact.id))}
+                onClick={() => dispatch(deleteContact(id))}
               >
                 delete
               </ContactDelButton>

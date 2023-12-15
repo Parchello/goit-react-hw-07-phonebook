@@ -3,7 +3,8 @@ import { Wrapper, Error, LabelName, Button } from './PhoneBook.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
-import { addContacts } from 'Redux/contactsSlice';
+import { addContact } from 'Redux/servise';
+import { selectContacts } from 'Redux/selector';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
@@ -13,10 +14,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 export const PhoneBook = () => {
-  const value = useSelector(getContacts);
-  function getContacts(state) {
-    return state.contacts.contacts;
-  }
+  const value = useSelector(selectContacts);
+
   const dispatch = useDispatch();
   return (
     <div>
@@ -34,7 +33,7 @@ export const PhoneBook = () => {
             toast.error('Contact already exists');
           } else {
             toast.success('Contact added');
-            dispatch(addContacts(values));
+            dispatch(addContact(values));
             actions.resetForm();
           }
         }}
